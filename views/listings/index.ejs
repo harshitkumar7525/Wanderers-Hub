@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
+<% layout("/layouts/boilerplate.ejs") %>
 <body>
     <h3>All listings: </h3>
-    <form action="/listings/new" method="get">
+    <!-- <form action="/listings/new" method="get">
         <button>Add new listing</button>
-    </form>
+    </form> -->
     <ul>
         <% for (let item of allListings) { %>
             <li>
@@ -22,4 +15,3 @@
         <% } %>
     </ul>
 </body>
-</html>
