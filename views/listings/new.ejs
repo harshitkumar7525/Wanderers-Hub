@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderer's Hub</title>
+</head>
+<body>
+    <h3>
+        Enter your listing details: 
+    </h3>
+    <form action="/listings" method="post">
+        <input type="text" name="title" placeholder="Enter the title">
+        <br>
+        <textarea name="description" placeholder="Enter the description"></textarea>
+        <br>
+        <input type="text" name="image" placeholder="Enter the image URL/link">
+        <br>
+        <input type="number" name="price" placeholder="Enter the price">
+        <br>
+        <input type="text" name="location" placeholder="Enter the location">
+        <br>
+        <input type="text" name="country" placeholder="Enter the country">
+        <br>
+        <button>Submit</button>
+    </form>
+</body>
+</html>

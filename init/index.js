@@ -3,7 +3,7 @@ const data = require("./data.js");
 const Listing = require("../models/listing.js");
 
 async function main(){
-    await mongoose.connect("mongodb://127.0.0.1:27017/WanderLust");
+    await mongoose.connect("mongodb://127.0.0.1:27017/Wanderers_Hub");
 }
 
 main()
@@ -18,6 +18,7 @@ const initDB = async () => {
     await Listing.deleteMany({});
     await Listing.insertMany(data.data);
     console.log("Data entered successfully");
+    await mongoose.connection.close();
 }
 
 initDB();
