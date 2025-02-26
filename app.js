@@ -61,6 +61,7 @@ app.get("/listings/:id",async (req,res)=>{
 
 app.post("/listings",(req,res)=>{
     let newList = new Listing(req.body);
+    console.log(newList.image);
     newList.save()
     .then(result => {
         console.log(result);
@@ -83,8 +84,7 @@ app.get("/listings/:id/edit",(req,res)=>{
 
 app.put("/listings/:id/edit",async (req,res)=>{
     let newList = req.body.listing;
-    newList.description = newList.description.toString().trim();
-    let result = await Listing.findByIdAndUpdate(req.params.id,newList);
+    let result = await Listing.findByIdAndUpdate(req.params.id,{...newList});
     if(result){
         res.redirect(`/listings/${req.params.id}`);
     }
