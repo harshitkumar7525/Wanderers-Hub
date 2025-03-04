@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const reviewSchema = Schema({
+    name: {
+        type: String,
+        required: true
+    },
     comment: String,
     rating: {
         type: Number,
