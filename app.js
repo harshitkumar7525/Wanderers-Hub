@@ -7,7 +7,10 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js")
 const listing = require("./routes/listings.js");
-const reviews = require("./routes/review.js")
+const reviews = require("./routes/review.js");
+const session = require("express-session");
+const sessionKey = require("./passwords.json").sessions;
+const flash = require("connect-flash");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -29,10 +32,24 @@ main()
         console.log("DB connection failed");
     })
 
+const sessionOptions = {
+    secret: sessionKey,
+    resave: false,
+    saveUninitalized: true
+}
+
+app.use(session(sessionOptions));
+app.use(flash());
 
 app.get("/", (req, res) => {
     res.redirect("/listings");
 });
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+})
+
 
 app.use("/listings", listing);
 app.use("/listings/:id/reviews", reviews);

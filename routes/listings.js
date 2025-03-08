@@ -26,13 +26,18 @@ router.get("/new", (req, res) => {
 
 router.get("/:id", wrapAsync(async (req, res) => {
     let listing = await Listing.findById(req.params.id).populate("reviews");
+    if(!listing){
+        req.flash("error","Requested Listing cannot be found");
+        res.redirect("/listings");
+    }
     res.render("./listings/show.ejs", { listing });
 }));
 
 router.post("/", validateListing, wrapAsync(async (req, res, next) => {
     let newList = new Listing(req.body.listing);
     await newList.save();
-    res.redirect("/");
+    req.flash("success", "New listing added successfully!");
+    res.redirect("/listings");
 }));
 
 router.get("/:id/edit", wrapAsync(async (req, res) => {
@@ -43,12 +48,14 @@ router.get("/:id/edit", wrapAsync(async (req, res) => {
 router.put("/:id/edit", validateListing, wrapAsync(async (req, res) => {
     let newList = req.body.listing;
     await Listing.findByIdAndUpdate(req.params.id, { ...newList });
+    req.flash("success", "Listing edited successfully!");
     res.redirect(`/listings/${req.params.id}`);
 }));
 
 router.delete("/:id/delete", wrapAsync(async (req, res) => {
     let result = await Listing.findByIdAndDelete(req.params.id, { new: true })
     console.log(result);
+    req.flash("success", "Listing deleted successfully!");
     res.redirect("/");
 }));
 
