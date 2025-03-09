@@ -1,11 +1,8 @@
+const { ref } = require("joi");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const reviewSchema = Schema({
-    name: {
-        type: String,
-        required: true
-    },
     comment: String,
     rating: {
         type: Number,
@@ -15,6 +12,10 @@ const reviewSchema = Schema({
     created_at: {
         type: Date,
         default: Date.now()
+    },
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
     }
 });
 const Review = mongoose.model("Review", reviewSchema);
