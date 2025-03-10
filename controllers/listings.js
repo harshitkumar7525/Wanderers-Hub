@@ -32,10 +32,10 @@ module.exports.showListing = async (req, res) => {
 
 module.exports.createListing = async (req, res, next) => {
     let coordinates = await geocodingClient.forwardGeocode({
-        query:req.body.listing.location,
-        limit:1
+        query: req.body.listing.location,
+        limit: 1
     })
-    .send();
+        .send();
     let url = req.file.path;
     let filename = req.file.filename;
     let newList = new Listing(req.body.listing);
@@ -55,7 +55,21 @@ module.exports.renderEditForm = async (req, res) => {
 };
 
 module.exports.editListing = async (req, res) => {
+    let oldlisting = await Listing.findById(req.params.id);
+    let newloc = false;
+    if ((oldlisting.location)!==(req.body.listing.location)) {
+        newloc = true;
+    }
     let listing = await Listing.findByIdAndUpdate(req.params.id, { ...req.body.listing });
+    if (newloc) {
+        let coordinates = await geocodingClient.forwardGeocode({
+            query: req.body.listing.location,
+            limit: 1
+        })
+            .send();
+        listing.geometry = coordinates.body.features[0].geometry;
+        await listing.save();
+    }
     if (typeof req.file !== "undefined") {
         let url = req.file.path;
         let filename = req.file.filename;
