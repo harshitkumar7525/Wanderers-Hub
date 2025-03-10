@@ -22,7 +22,8 @@
       </p>
     </div>
   </div>
-  <% if(listing.owner && currUser && listing.owner._id.equals(currUser._id)) { %>
+  <% if(listing.owner && currUser && listing.owner._id.equals(currUser._id)) {
+  %>
   <div class="btns mb-3">
     <a
       href="/listings/<%= listing._id %>/edit"
@@ -48,18 +49,56 @@
       class="mb-3 needs-validation"
       novalidate
     >
-      <div class="mb-3 mt-3">
-        <label for="rating" class="form-label">Rating</label>
-        <input
-          class="form-range"
-          type="range"
-          min="1"
-          max="5"
-          id="rating"
-          name="review[rating]"
-        />
+      <div class="mt-3">
+        <label for="review[rating]" class="form-label">Rating</label>
+        <fieldset class="starability-heart">
+          <input
+            type="radio"
+            id="no-rate"
+            class="input-no-rate"
+            name="review[rating]"
+            value="1"
+            checked
+            aria-label="No rating."
+          />
+          <input
+            type="radio"
+            id="first-rate1"
+            name="review[rating]"
+            value="1"
+          />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input
+            type="radio"
+            id="first-rate2"
+            name="review[rating]"
+            value="2"
+          />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input
+            type="radio"
+            id="first-rate3"
+            name="review[rating]"
+            value="3"
+          />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input
+            type="radio"
+            id="first-rate4"
+            name="review[rating]"
+            value="4"
+          />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input
+            type="radio"
+            id="first-rate5"
+            name="review[rating]"
+            value="5"
+          />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
       </div>
-      <div class="mb-3 mt-3">
+      <div class="mb-3">
         <label for="comment" class="form-label">Comments</label>
         <textarea
           name="review[comment]"
@@ -80,9 +119,9 @@
       <div class="card mb-3 ms-3 col-5" style="width: 18rem">
         <div class="card-body">
           <h5 class="card-title mt-2"><%= review.owner.username %></h5>
-          <h6 class="card-subtitle mb-2 text-body-secondary">
-            <%= review.rating %> stars
-          </h6>
+          <p class="starability-result" data-rating="<%= review.rating %>">
+            Rated: <%= review.rating %> stars
+          </p>
           <p class="card-text mb-2"><%= review.comment %></p>
 
           <% if(currUser && review.owner._id.equals(currUser._id)) { %>

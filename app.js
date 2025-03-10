@@ -14,7 +14,6 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user.js");
-const asyncWrap = require("./utils/wrapAsync.js");
 const userRouter = require("./routes/users.js");
 
 async function main() {
@@ -67,15 +66,6 @@ app.use((req, res, next) => {
     res.locals.currUser = req.user;
     next();
 });
-
-app.get("/demouser", asyncWrap(async (req, res) => {
-    let demo = new User({
-        email: "student@email.com",
-        username: "example"
-    })
-    let registeredUser = await User.register(demo, "examplepass");
-    res.send(registeredUser);
-}));
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
