@@ -13,7 +13,6 @@ const ExpressError = require("./utils/ExpressError.js")
 const listingRouter = require("./routes/listings.js");
 const reviewRouter = require("./routes/reviews.js");
 const session = require("express-session");
-const sessionKey = require("./passwords.json").sessions;
 const flash = require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
@@ -41,7 +40,7 @@ app.use(express.json());
 app.engine("ejs", ejsMate);
 
 const sessionOptions = {
-    secret: sessionKey,
+    secret: process.env.SESSION_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: {
