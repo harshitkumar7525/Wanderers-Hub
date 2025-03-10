@@ -17,9 +17,12 @@
   })
 })()
 let taxSwitch = document.querySelector("#flexSwitchCheckDefault");
-taxSwitch.addEventListener("click", () => {
-  let taxInfo = document.querySelectorAll(".tax-info");
-  for (let info of taxInfo) {
-    info.classList.toggle("hide");
-  }
-});
+
+if (taxSwitch) {
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.querySelectorAll(".tax-info");
+    for (let info of taxInfo) {
+      info.classList.toggle("hide");
+    }
+  });
+}

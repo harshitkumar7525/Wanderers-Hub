@@ -1,7 +1,7 @@
-if(process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
 }
-
+const mongoUrl = `mongodb+srv://${process.env.ATLAS_USER}:${process.env.ATLAS_PASS}@cluster0.fqfva.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -13,6 +13,7 @@ const ExpressError = require("./utils/ExpressError.js")
 const listingRouter = require("./routes/listings.js");
 const reviewRouter = require("./routes/reviews.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
@@ -20,7 +21,7 @@ const User = require("./models/user.js");
 const userRouter = require("./routes/users.js");
 
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/Wanderers_Hub");
+    await mongoose.connect(mongoUrl);
 }
 
 main()
@@ -39,7 +40,20 @@ app.use(methodOverride("_method"));
 app.use(express.json());
 app.engine("ejs", ejsMate);
 
+const store = MongoStore.create({
+    mongoUrl: mongoUrl,
+    crypto: {
+        secret: process.env.SESSION_KEY,
+    },
+    touchAfter: 24 * 3600,
+});
+
+store.on("error", () => {
+    console.log("ERROR in MONGO SESSION STORE");
+});
+
 const sessionOptions = {
+    store,
     secret: process.env.SESSION_KEY,
     resave: false,
     saveUninitialized: true,
@@ -53,6 +67,7 @@ const sessionOptions = {
 app.get("/", (req, res) => {
     res.redirect("/listings");
 });
+
 
 app.use(session(sessionOptions));
 app.use(flash());
