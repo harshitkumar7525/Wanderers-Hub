@@ -1,24 +1,66 @@
 <% layout("/layouts/boilerplate.ejs") %>
-<body>
-  <h3>All listings:</h3>
-  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-    <% for (let item of allListings) { %>
-    <a href="/listings/<%= item._id %>" class="listing-link">
-      <div class="card col listing-card">
-        <img
-          src="<%= item.image.url %>"
-          class="card-img-top"
-          alt="listing image"
-        />
-        <div class="card-img-overlay"></div>
-        <div class="card-body">
-          <p class="card-text">
-            <b><%= item.title %></b><br />
-            &#8377;<%= item.price.toLocaleString("en-IN") %>/night
-          </p>
-        </div>
-      </div>
-    </a>
-    <% } %>
+<div id="filters">
+  <div class="filter">
+    <div><i class="fa-solid fa-fire"></i></div>
+    <p>Trending</p>
   </div>
-</body>
+  <div class="filter">
+    <div><i class="fa-solid fa-bed"></i></div>
+    <p>Rooms</p>
+  </div>
+  <div class="filter">
+    <div><i class="fa-solid fa-mountain-city"></i></div>
+    <p>Iconic Cities</p>
+  </div>
+  <div class="filter">
+    <div><i class="fa-solid fa-mountain"></i></div>
+    <p>Mountains</p>
+  </div>
+  <div class="filter">
+    <div><i class="fa-solid fa-chess-rook"></i></div>
+    <p>Castles</p>
+  </div>
+  <div class="filter">
+    <div><i class="fa-solid fa-person-swimming"></i></div>
+    <p>Pools</p>
+  </div>
+  <div class="filter">
+    <div><i class="fa-solid fa-snowflake"></i></div>
+    <p>Hill Stations</p>
+  </div>
+  <div class="tax-toggle ms-auto">
+    <div class="form-check-reverse form-switch">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="flexSwitchCheckDefault"
+      />
+      <label class="form-check-label" for="flexSwitchCheckDefault"
+        >Display taxes</label
+      >
+    </div>
+  </div>
+</div>
+<div class="row row-cols-lg-3 row-cols-md-2 mt-3 row-cols-sm-1">
+  <% for (let item of allListings) { %>
+  <a href="/listings/<%= item._id %>" class="listing-link">
+    <div class="card col listing-card">
+      <img
+        src="<%= item.image.url %>"
+        class="card-img-top"
+        alt="listing image"
+      />
+      <div class="card-img-overlay"></div>
+      <div class="card-body">
+        <p class="card-text">
+          <b><%= item.title %></b><br />
+          &#8377;
+          <span><%= item.price.toLocaleString("en-IN") %> </span>/night &nbsp;
+          <i class="tax-info">+ 18% &nbsp; GST</i>
+        </p>
+      </div>
+    </div>
+  </a>
+  <% } %>
+</div>
