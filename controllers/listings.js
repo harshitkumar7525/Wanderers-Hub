@@ -29,8 +29,11 @@ module.exports.showListing = async (req, res) => {
 
 
 module.exports.createListing = async (req, res, next) => {
+    let url = req.file.path;
+    let filename = req.file.filename;
     let newList = new Listing(req.body.listing);
     newList.owner = req.user._id;
+    newList.image = { url, filename };
     await newList.save();
     req.flash("success", "New listing added successfully!");
     res.redirect("/listings");
@@ -38,12 +41,19 @@ module.exports.createListing = async (req, res, next) => {
 
 module.exports.renderEditForm = async (req, res) => {
     let listing = await Listing.findById(req.params.id)
-    res.render("./listings/edit.ejs", { listing });
+    let OriginalUrl = listing.image.url;
+    OriginalUrl = OriginalUrl.replace("/upload", "/upload/h_300,w_250");
+    res.render("./listings/edit.ejs", { listing, OriginalUrl });
 };
 
 module.exports.editListing = async (req, res) => {
-    let newList = req.body.listing;
-    await Listing.findByIdAndUpdate(req.params.id, { ...newList });
+    let listing = await Listing.findByIdAndUpdate(req.params.id, { ...req.body.listing });
+    if (typeof req.file !== "undefined") {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        listing.image = { url, filename };
+        await listing.save()
+    }
     req.flash("success", "Listing edited successfully!");
     res.redirect(`/listings/${req.params.id}`);
 };

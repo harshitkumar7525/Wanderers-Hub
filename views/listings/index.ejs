@@ -5,9 +5,12 @@
     <% for (let item of allListings) { %>
     <a href="/listings/<%= item._id %>" class="listing-link">
       <div class="card col listing-card">
-        <img src="<%= item.image %>" class="card-img-top" alt="listing image" />
-        <div class="card-img-overlay">
-        </div>
+        <img
+          src="<%= item.image.url %>"
+          class="card-img-top"
+          alt="listing image"
+        />
+        <div class="card-img-overlay"></div>
         <div class="card-body">
           <p class="card-text">
             <b><%= item.title %></b><br />
